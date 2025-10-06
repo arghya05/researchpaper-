@@ -1,36 +1,123 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# arXiv Research Paper Search
 
-## Getting Started
+A modern, full-stack web application for searching and exploring the latest research papers from arXiv. Built with Next.js, TypeScript, and Tailwind CSS.
 
-First, run the development server:
+## 🚀 Features
 
+- 🔍 **Real-time Search**: Search arXiv papers by keyword with instant results
+- 📄 **Paper Details**: View titles, authors, abstracts, and publication dates
+- 📥 **Direct Access**: Quick links to paper abstracts and PDF downloads
+- 🎨 **Modern UI**: Responsive design with dark mode support
+- ⚡ **Fast & Serverless**: Optimized for Vercel deployment with no backend needed
+- 🌐 **Production Ready**: Fully deployed and working on Vercel
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **API**: arXiv API (direct integration)
+- **Deployment**: Vercel
+
+## 📦 Getting Started
+
+### Prerequisites
+
+- Node.js 18+ and npm
+
+### Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/arghya05/researchpaper-.git
+cd researchpaper-
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Run the development server:
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## Learn More
+## 🌐 Deployment
 
-To learn more about Next.js, take a look at the following resources:
+This app is optimized for Vercel deployment:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Push your code to GitHub
+2. Import the repository in Vercel
+3. Deploy with one click - no environment variables needed!
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The app works entirely on serverless functions - no separate backend required.
 
-## Deploy on Vercel
+## 🔍 Usage
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Enter a search term (e.g., "machine learning", "quantum computing", "neural networks")
+2. Click "Search" to fetch the latest papers from arXiv
+3. Browse through results with titles, authors, and summaries
+4. Click "View Abstract" to see full details on arXiv
+5. Click "Download PDF" to get the paper
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📂 Project Structure
+
+```
+├── app/
+│   ├── api/
+│   │   └── search/
+│   │       └── route.ts    # arXiv API integration
+│   ├── layout.tsx          # Root layout
+│   ├── page.tsx            # Main search page
+│   └── globals.css         # Global styles
+├── backend/                # Legacy FastAPI code (not used in production)
+├── public/                 # Static assets
+└── vercel.json            # Vercel configuration
+```
+
+## 🔧 API Endpoint
+
+### `POST /api/search`
+
+Search for papers on arXiv.
+
+**Request Body:**
+```json
+{
+  "query": "machine learning",
+  "max_results": 10
+}
+```
+
+**Response:**
+```json
+{
+  "papers": [
+    {
+      "id": "http://arxiv.org/abs/2301.12345",
+      "title": "Paper Title",
+      "authors": ["Author 1", "Author 2"],
+      "summary": "Paper summary...",
+      "published": "2023-01-15T00:00:00Z",
+      "link": "http://arxiv.org/abs/2301.12345",
+      "pdf_link": "http://arxiv.org/pdf/2301.12345.pdf"
+    }
+  ],
+  "total": 10
+}
+```
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to open issues or submit pull requests.
+
+## 📄 License
+
+MIT
+
+## 👨‍💻 Author
+
+Created by [arghya05](https://github.com/arghya05)
