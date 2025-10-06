@@ -1,14 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-interface ArxivEntry {
-  id: { _text: string };
-  title: { _text: string };
-  summary: { _text: string };
-  published: { _text: string };
-  author: Array<{ name: { _text: string } }> | { name: { _text: string } };
-  link: Array<{ _attributes: { href: string; type?: string } }>;
-}
-
 interface SearchFilters {
   query: string;
   categories?: string[];
@@ -18,6 +9,21 @@ interface SearchFilters {
   maxResults?: number;
   sortBy?: 'relevance' | 'date' | 'citations';
   searchIn?: 'all' | 'title' | 'abstract' | 'author';
+}
+
+interface Paper {
+  id: string;
+  arxivId: string;
+  title: string;
+  authors: string[];
+  summary: string;
+  published: string;
+  updated: string;
+  categories: string[];
+  primaryCategory: string;
+  link: string;
+  pdf_link: string;
+  relevanceScore?: number;
 }
 
 export async function POST(request: NextRequest) {
@@ -42,7 +48,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Build advanced search query
-    let searchQuery = buildSearchQuery(query, searchIn, categories, authors);
+    const searchQuery = buildSearchQuery(query, searchIn, categories, authors);
 
     // Search arXiv with advanced parameters
     const searchParams = new URLSearchParams({
@@ -73,7 +79,7 @@ export async function POST(request: NextRequest) {
     // Calculate relevance scores
     papers = papers.map(paper => ({
       ...paper,
-      relevanceScore: calculateRelevanceScore(paper, query, searchIn)
+      relevanceScore: calculateRelevanceScore(paper, query)
     }));
 
     // Sort based on preference
@@ -111,7 +117,7 @@ function buildSearchQuery(
   categories: string[],
   authors?: string
 ): string {
-  let searchParts: string[] = [];
+  const searchParts: string[] = [];
 
   // Search in specific fields
   if (searchIn === 'title') {
@@ -138,7 +144,7 @@ function buildSearchQuery(
   return searchParts.join(' ');
 }
 
-function calculateRelevanceScore(paper: any, query: string, searchIn: string): number {
+function calculateRelevanceScore(paper: Paper, query: string): number {
   let score = 0;
   const queryLower = query.toLowerCase();
   const queryTerms = queryLower.split(/\s+/).filter(t => t.length > 2);
@@ -183,7 +189,7 @@ function calculateRelevanceScore(paper: any, query: string, searchIn: string): n
   return score;
 }
 
-function filterByDate(papers: any[], dateFrom?: string, dateTo?: string): any[] {
+function filterByDate(papers: Paper[], dateFrom?: string, dateTo?: string): Paper[] {
   return papers.filter(paper => {
     const publishedDate = new Date(paper.published);
 

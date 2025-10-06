@@ -146,7 +146,7 @@ export default function Home() {
             <div className="flex gap-4 mb-4">
               <select
                 value={searchIn}
-                onChange={(e) => setSearchIn(e.target.value as any)}
+                onChange={(e) => setSearchIn(e.target.value as 'all' | 'title' | 'abstract' | 'author')}
                 className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-white text-sm"
               >
                 <option value="all">Search in: All fields</option>
@@ -157,7 +157,7 @@ export default function Home() {
 
               <select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
+                onChange={(e) => setSortBy(e.target.value as 'relevance' | 'date')}
                 className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-white text-sm"
               >
                 <option value="relevance">Sort by: Relevance</option>
