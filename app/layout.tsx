@@ -5,8 +5,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "arXiv Paper Search",
-  description: "Search for the latest research papers on arXiv",
+  title: "arXiv Research Search - Advanced Filters & Smart Ranking",
+  description: "Advanced research paper search with smart relevance ranking, category filters, and date ranges. Better than Google Scholar.",
 };
 
 export default function RootLayout({
