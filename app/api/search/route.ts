@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
     const xmlText = await response.text();
 
     // Parse XML response
-    let papers = parseArxivXML(xmlText);
+    let papers: Paper[] = parseArxivXML(xmlText);
 
     // Apply date filtering
     if (dateFrom || dateTo) {
@@ -77,24 +77,24 @@ export async function POST(request: NextRequest) {
     }
 
     // Calculate relevance scores
-    papers = papers.map(paper => ({
+    const papersWithScores = papers.map(paper => ({
       ...paper,
       relevanceScore: calculateRelevanceScore(paper, query)
     }));
 
     // Sort based on preference
     if (sortBy === 'relevance') {
-      papers.sort((a, b) => (b.relevanceScore || 0) - (a.relevanceScore || 0));
+      papersWithScores.sort((a, b) => (b.relevanceScore || 0) - (a.relevanceScore || 0));
     } else if (sortBy === 'date') {
-      papers.sort((a, b) => new Date(b.published).getTime() - new Date(a.published).getTime());
+      papersWithScores.sort((a, b) => new Date(b.published).getTime() - new Date(a.published).getTime());
     }
 
     // Limit results
-    papers = papers.slice(0, maxResults);
+    const finalPapers = papersWithScores.slice(0, maxResults);
 
     return NextResponse.json({
-      papers,
-      total: papers.length,
+      papers: finalPapers,
+      total: finalPapers.length,
       filters: {
         categories,
         dateFrom,
